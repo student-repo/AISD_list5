@@ -39,6 +39,30 @@ public class BST {
         BST.insert(1);
         BST.insert(2);
         BST.insert(3);
+        BST.insert(3000);
+
+        BST.remove(1);
+        BST.remove(3);
+        BST.remove(2);
+        BST.remove(1000);
+
+
+        BST.insert(123);
+        BST.insert(41);
+        BST.insert(12);
+        BST.insert(55);
+        BST.insert(100);
+        BST.insert(121);
+        BST.insert(3241);
+        BST.insert(3199);
+        BST.insert(3499);
+        BST.insert(3599);
+
+
+
+        System.out.println("@@@@@@@@@@@@@@@@ " + BST.search(3000).size);
+        System.out.println("################ " + BST.os_select(0));
+        System.out.println("$$$$$$$$$$$$$$$$ " + BST.os_rank(121));
 
 //        System.out.println(BST.getRoot().right.key);
         BST.displayTree();
@@ -47,6 +71,7 @@ public class BST {
     public class Node {
         protected Node left, right; // this Node's children
         protected Node parent;      // this Node's parent
+        private int size;
         private int key;              // this Node's key
         /**
          * Constructor for a Node.
@@ -55,6 +80,7 @@ public class BST {
          */
         public Node(int key) {
             this.key = key;
+            this.size = 1;
             parent = left = right = null;
         }
 
@@ -100,6 +126,53 @@ public class BST {
             return null;
         else
             return root;
+    }
+    public Integer os_rank(int key) {
+        return os_rank(search(key));
+    }
+
+    public Integer os_rank(Node x) {
+        int r;
+        if(x.left != null){
+            r = x.left.size + 1;
+        } else {
+            r = 1;
+        }
+        Node y = x;
+        while(y != root) {
+            if(y == y.parent.right) {
+                if(y.parent.left != null) {
+                    r += y.parent.left.size + 1;
+                }
+                else {
+                    r ++;
+                }
+            }
+            y = y.parent;
+        }
+        return r;
+    }
+
+    public Node os_select(int i) {
+        return os_select(root, i + 1);
+    }
+
+    public Node os_select(Node x, int i) {
+        int r;
+        if(x.left != null){
+            r = x.left.size + 1;
+        } else {
+            r = 1;
+        }
+
+        if(r == i) {
+            return x;
+        } else if(i < r) {
+            return os_select(x.left, i);
+        }
+        else {
+            return os_select(x.right, i - r );
+        }
     }
 
     /**
@@ -148,6 +221,7 @@ public class BST {
     public Node insert(int key) {
         Node z = new Node(key);  // create the new Node
         Node x = root;                  // Node whose key is compared with z's
+        Node y;
         Node xParent = null;        // x's parent
 
         // Go down the BST from the root, heading left or right depending on
@@ -172,6 +246,11 @@ public class BST {
                 xParent.left = z;
             else
                 xParent.right = z;
+        }
+        y = z;
+        while(y.parent != null){
+            y = y.parent;
+            y.size++;
         }
 
         return z;
@@ -220,6 +299,11 @@ public class BST {
      * @param z the node to remove
      */
     public void remove(Node z) {
+        Node yy  = z;
+        while(yy.parent != null) {
+            yy = yy.parent;
+            yy.size --;
+        }
         if (z.left == null)       // no left child?
             transplant(z, z.right);     // then just replace z by its right child
         else if (z.right == null) // no right child?

@@ -1,3 +1,5 @@
+import java.util.concurrent.ThreadLocalRandom;
+
 class RandomizedSelect
 {
     // This function returns k'th smallest element in arr[l..r]
@@ -61,7 +63,7 @@ class RandomizedSelect
     int randomPartition(int arr[], int l, int r)
     {
         int n = r-l+1;
-        int pivot = (int)(Math.random()) % n;
+        int pivot = ThreadLocalRandom.current().nextInt(0, n);
         swap(arr, l + pivot, r);
         return partition(arr, l, r);
     }
