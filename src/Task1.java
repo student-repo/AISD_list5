@@ -102,7 +102,7 @@ public class Task1 {
         }
 
         try (Writer writer = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream("./src/output.csv"), "utf-8"))) {
+                new FileOutputStream("./src/task1_output.csv"), "utf-8"))) {
             writer.write(report);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -113,7 +113,7 @@ public class Task1 {
         }
 
         Runtime runTime = Runtime.getRuntime();
-        Process process = runTime.exec("libreoffice --calc ./src/output.csv &");
+        Process process = runTime.exec("libreoffice --calc ./src/task1_output.csv &");
 
 
 
